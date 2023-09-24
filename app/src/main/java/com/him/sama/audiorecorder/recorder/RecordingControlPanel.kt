@@ -29,7 +29,13 @@ import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
 import com.him.sama.audiorecorder.ui.theme.GrayDark
 
 @Composable
-fun BoxScope.ControlPanel(isRecording: Boolean, onRecordingClick: () -> Unit) {
+fun BoxScope.ControlPanel(
+    isRecording: Boolean,
+    onRecordingClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onDoneClick: () -> Unit,
+    onListClick: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .align(Alignment.BottomCenter)
@@ -38,20 +44,28 @@ fun BoxScope.ControlPanel(isRecording: Boolean, onRecordingClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(62.dp)
-                .background(GrayDark, CircleShape),
-        ) {
-            Icon(
+        if (isRecording)
+            Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .align(Alignment.Center),
-                painter = painterResource(id = R.drawable.outline_clear_24),
-                contentDescription = null,
-                tint = Color.White
+                    .clickable(onClick = onDeleteClick)
+                    .size(62.dp)
+                    .background(Color.White.copy(alpha = 0.9f), CircleShape),
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.Center),
+                    painter = painterResource(id = R.drawable.outline_clear_24),
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        else
+            Box(
+                modifier = Modifier
+                    .size(62.dp)
+                    .background(Color.Transparent),
             )
-        }
         Spacer(modifier = Modifier.width(16.dp))
         if (isRecording)
             Icon(
@@ -71,20 +85,39 @@ fun BoxScope.ControlPanel(isRecording: Boolean, onRecordingClick: () -> Unit) {
                     .background(Color.Red, CircleShape)
             )
         Spacer(modifier = Modifier.width(16.dp))
-        Box(
-            modifier = Modifier
-                .size(62.dp)
-                .background(GrayDark, CircleShape),
-        ) {
-            Icon(
+        if (isRecording)
+            Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .align(Alignment.Center),
-                painter = painterResource(id = R.drawable.round_done_24),
-                contentDescription = null,
-                tint = Color.White
-            )
-        }
+                    .clickable(onClick = onDoneClick)
+                    .size(62.dp)
+                    .background(Color.White.copy(alpha = 0.9f), CircleShape),
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.Center),
+                    painter = painterResource(id = R.drawable.round_done_24),
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        else
+            Box(
+                modifier = Modifier
+                    .clickable(onClick = onListClick)
+                    .size(62.dp)
+                    .background(Color.White.copy(alpha = 0.9f), CircleShape),
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.Center),
+                    painter = painterResource(id = R.drawable.baseline_view_list_24),
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+
     }
 }
 
@@ -97,9 +130,15 @@ fun PreviewControlPanelRecording() {
     }
     AudioRecorderTheme {
         Box {
-            ControlPanel(isRecording, {
-                isRecording = !isRecording
-            })
+            ControlPanel(
+                isRecording = isRecording,
+                onRecordingClick = {
+                    isRecording = !isRecording
+                },
+                onDeleteClick = {},
+                onDoneClick = {},
+                onListClick = {}
+            )
         }
     }
 }
@@ -109,7 +148,12 @@ fun PreviewControlPanelRecording() {
 fun PreviewControlPanelNotRecording() {
     AudioRecorderTheme {
         Box {
-            ControlPanel(false, {})
+            ControlPanel(
+                isRecording = false,
+                onRecordingClick = {},
+                onDeleteClick = {},
+                onDoneClick = {},
+                onListClick = {})
         }
     }
 }

@@ -26,10 +26,10 @@ class WaveformView(context: Context?, attrs: AttributeSet?) : View(context, attr
         sw = resources.displayMetrics.widthPixels.toFloat()
     }
 
-    override fun draw(canvas: Canvas?) {
+    override fun draw(canvas: Canvas) {
         super.draw(canvas)
         spikes.forEach {
-            canvas?.drawRoundRect(it, radius, radius, paint)
+            canvas.drawRoundRect(it, radius, radius, paint)
         }
     }
 

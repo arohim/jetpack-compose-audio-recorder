@@ -14,6 +14,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +28,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +46,10 @@ import com.him.sama.audiorecorder.recorder.ControlPanel
 import com.him.sama.audiorecorder.recorder.WaveformView
 import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
 import com.him.sama.audiorecorder.ui.theme.ColorText
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AudioRecorderScreen(
     viewModel: AudioRecorderViewModel = viewModel()
@@ -49,6 +59,9 @@ fun AudioRecorderScreen(
     val duration = viewModel.duration.collectAsStateWithLifecycle().value
     val amplitudes = viewModel.amplitudes.collectAsStateWithLifecycle().value
     val spikes = viewModel.spikes.collectAsStateWithLifecycle().value
+    val coroutine = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val fileName = remember { mutableStateOf("") }
 
     var permissionGranted by remember {
         mutableStateOf(
@@ -73,10 +86,45 @@ fun AudioRecorderScreen(
         viewModel.init(context = context)
     }
 
-    Content(isRecording, duration, amplitudes, spikes) {
-        viewModel.toggleRecording(context)
-    }
+    Content(
+        isRecording = isRecording,
+        duration = duration,
+        amplitudes = amplitudes,
+        spikes = spikes,
+        onRecordingClick = {
+            viewModel.toggleRecording(context)
+        },
+        onDoneClick = {
+            viewModel.onDone()
+        },
+        onDeleteClick = {
+            viewModel.onDelete()
+        },
+        onListClick = {
+            coroutine.launch {
+                sheetState.show()
+            }
+        },
+    )
 
+    ModalBottomSheetLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .imePadding(),
+        sheetState = sheetState,
+        sheetContent = {
+            ConfirmToSaveFileModalContent(
+                fileName,
+                coroutine,
+                sheetState,
+                onSave = {
+                    viewModel.save(fileName.value)
+                }
+            )
+        }
+    ) {
+    }
 }
 
 @Composable
@@ -85,7 +133,10 @@ private fun Content(
     duration: String,
     amplitudes: ArrayList<Float>,
     spikes: ArrayList<RectF>,
-    onRecordingClick: () -> Unit
+    onRecordingClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onDoneClick: () -> Unit,
+    onListClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -93,7 +144,13 @@ private fun Content(
             .background(Color.White),
     ) {
         Display(duration, amplitudes, spikes)
-        ControlPanel(isRecording, onRecordingClick = onRecordingClick)
+        ControlPanel(
+            isRecording = isRecording,
+            onRecordingClick = onRecordingClick,
+            onDeleteClick = onDeleteClick,
+            onDoneClick = onDoneClick,
+            onListClick = onListClick,
+        )
     }
 }
 
@@ -133,7 +190,16 @@ private fun BoxScope.Display(
 @Composable
 fun PreviewAudioRecorderScreen() {
     AudioRecorderTheme {
-        Content(true, "00:00.000", arrayListOf(), arrayListOf()) {}
+        Content(
+            isRecording = true,
+            duration = "00:00.000",
+            amplitudes = arrayListOf(),
+            spikes = arrayListOf(),
+            onRecordingClick = {},
+            onDeleteClick = {},
+            onDoneClick = {},
+            onListClick = {}
+        )
     }
 }
 

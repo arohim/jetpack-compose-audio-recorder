@@ -15,8 +15,6 @@ import java.util.Locale
 
 class AudioRecorderViewModel constructor() : ViewModel() {
 
-    //    private var timer: Timer? = null
-
     private var _isRecording = MutableStateFlow(false)
     private var _duration = MutableStateFlow("00:00.00")
     private var recorder: AndroidAudioRecorder? = null
@@ -52,7 +50,6 @@ class AudioRecorderViewModel constructor() : ViewModel() {
                         val bottom = screenHeight / 2 + ampitude / 2
                         _spikes.value.add(RectF(left, top, right, bottom))
                     }
-
             }
         }
     }
@@ -101,6 +98,9 @@ class AudioRecorderViewModel constructor() : ViewModel() {
         timer?.stop()
         timer = null
         audioFile = null
+        _amplitudes.value = arrayListOf()
+        _spikes.value = arrayListOf()
+        _duration.value = "00:00.00"
     }
 
     private fun pauseRecording() {
@@ -112,5 +112,16 @@ class AudioRecorderViewModel constructor() : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         stopRecording()
+    }
+
+    fun onDone() {
+    }
+
+    fun onDelete() {
+        audioFile?.delete()
+        stopRecording()
+    }
+
+    fun save(value: String) {
     }
 }
