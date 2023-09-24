@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.audioplayer
+package com.him.sama.audiorecorder.ui.audioplayer
 
 import android.content.Context
 import android.media.MediaPlayer

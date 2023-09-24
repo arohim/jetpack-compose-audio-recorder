@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.recorder
+package com.him.sama.audiorecorder.ui.recorder
 
 import java.io.File
 

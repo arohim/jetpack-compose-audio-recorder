@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder
+package com.him.sama.audiorecorder.ui.recorder.screen
 
 import android.Manifest.permission.RECORD_AUDIO
 import android.content.pm.PackageManager
@@ -43,22 +43,23 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.him.sama.audiorecorder.recorder.AudioRecorderViewModel
-import com.him.sama.audiorecorder.recorder.ControlPanel
-import com.him.sama.audiorecorder.recorder.WaveformView
+import com.him.sama.audiorecorder.ui.recorder.WaveformView
+import com.him.sama.audiorecorder.ui.recorder.component.ConfirmToSaveFileModalContent
+import com.him.sama.audiorecorder.ui.recorder.component.ControlPanel
 import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
 import com.him.sama.audiorecorder.ui.theme.ColorText
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 
 @OptIn(
-    ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterialApi::class,
     ExperimentalComposeUiApi::class
 )
 @Composable
 fun AudioRecorderScreen(
-    viewModel: AudioRecorderViewModel = viewModel()
+    viewModel: AudioRecorderViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     val uiState = viewModel.uiState.collectAsStateWithLifecycle().value

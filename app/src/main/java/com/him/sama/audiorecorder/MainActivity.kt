@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.him.sama.audiorecorder.ui.recorder.screen.AudioRecorderScreen
 import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
 
 class MainActivity : ComponentActivity() {

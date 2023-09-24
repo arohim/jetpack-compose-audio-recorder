@@ -1,8 +1,7 @@
-package com.him.sama.audiorecorder.recorder
+package com.him.sama.audiorecorder.ui.recorder
 
 import android.os.Handler
 import android.os.Looper
-import kotlin.math.min
 
 
 class Timer(listener: OnTimerTickListener) {

@@ -1,10 +1,14 @@
-package com.him.sama.audiorecorder.recorder
+package com.him.sama.audiorecorder.ui.recorder.screen
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.him.sama.audiorecorder.recorder.Timer.OnTimerTickListener
-import com.him.sama.audiorecorder.recorder.model.AudioRecorderUiState
+import com.him.sama.audiorecorder.data.database.entity.AudioRecord
+import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
+import com.him.sama.audiorecorder.ui.recorder.AndroidAudioRecorder
+import com.him.sama.audiorecorder.ui.recorder.Timer
+import com.him.sama.audiorecorder.ui.recorder.Timer.OnTimerTickListener
+import com.him.sama.audiorecorder.ui.recorder.model.AudioRecorderUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -15,7 +19,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AudioRecorderViewModel : ViewModel() {
+class AudioRecorderViewModel(
+    private val audioRecordRepository: AudioRecordRepository
+) : ViewModel() {
 
     private var _showRecordSaved = MutableSharedFlow<Unit>()
     private var _showRecordDeleted = MutableSharedFlow<Unit>()
@@ -111,7 +117,17 @@ class AudioRecorderViewModel : ViewModel() {
     fun save(context: Context, fileName: String) {
         pauseRecording()
         val newFileName = generateFileName(context, fileName)
-        audioFile?.renameTo(File(newFileName))
+        val newFile = File(newFileName)
+        audioFile?.renameTo(newFile)
+        audioRecordRepository.insert(
+            AudioRecord(
+                fileName = newFileName,
+                filePath = newFile.path,
+                timestamp = Date().time,
+                duration = _uiState.value.duration,
+                amsPath = ""
+            )
+        )
         stopRecording()
         viewModelScope.launch {
             _showRecordSaved.emit(Unit)

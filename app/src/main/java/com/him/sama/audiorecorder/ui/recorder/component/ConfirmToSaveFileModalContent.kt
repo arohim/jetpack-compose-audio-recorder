@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder
+package com.him.sama.audiorecorder.ui.recorder.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
