@@ -25,6 +25,7 @@ class WaveformView(context: Context?, attrs: AttributeSet?) : View(context, attr
     init {
         paint.color = Color.rgb(244, 81, 30)
         screenWidth = resources.displayMetrics.widthPixels.toFloat()
+        maxSpikes = (screenWidth / (spikeWidth + spaceBetweenSpike)).toInt()
     }
 
     override fun draw(canvas: Canvas) {
