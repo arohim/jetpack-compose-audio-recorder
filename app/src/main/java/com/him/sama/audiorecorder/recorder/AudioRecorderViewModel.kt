@@ -1,72 +1,46 @@
 package com.him.sama.audiorecorder.recorder
 
 import android.content.Context
-import android.graphics.RectF
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import com.him.sama.audiorecorder.audioplayer.AndroidAudioPlayer
 import com.him.sama.audiorecorder.recorder.Timer.OnTimerTickListener
+import com.him.sama.audiorecorder.recorder.model.AudioRecorderUiState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AudioRecorderViewModel constructor() : ViewModel() {
+class AudioRecorderViewModel : ViewModel() {
 
-    private var _isRecording = MutableStateFlow(false)
-    private var _duration = MutableStateFlow("00:00.00")
+    private var _showSavedPopup = MutableSharedFlow<Unit>()
+    private var _uiState = MutableStateFlow(AudioRecorderUiState())
     private var recorder: AndroidAudioRecorder? = null
     private var audioFile: File? = null
-    private val player: AndroidAudioPlayer? = null
-
-    private var _amplitudes = MutableStateFlow(ArrayList<Float>())
-    private val _spikes = MutableStateFlow(ArrayList<RectF>())
-
-    private var maxSpikes = 0
-    private val spikeWidth = 9f
-    private val spaceBetweenSpike = 6f
-
-    private var screenWidth = 0f
-    private var screenHeight = 400f
 
     private var timer: Timer? = null
     private val timerListener = object : OnTimerTickListener {
         override fun onTimerTick(duration: String) {
-            _duration.value = duration
             recorder?.maxAmplitude()?.let { amp ->
                 val normalized = (amp.toInt() / 7).coerceAtMost(400).toFloat()
-                _amplitudes.value.add(normalized)
-                _spikes.value.clear()
-
-                _amplitudes.value
-                    .takeLast(maxSpikes)
-                    .forEachIndexed { i, ampitude ->
-                        val left =
-                            screenWidth - i * (spikeWidth + spaceBetweenSpike)
-                        val top = screenHeight / 2 - ampitude / 2
-                        val right = left + spikeWidth
-                        val bottom = screenHeight / 2 + ampitude / 2
-                        _spikes.value.add(RectF(left, top, right, bottom))
+                _uiState.value = _uiState.value.copy(
+                    duration = duration,
+                    amplitudes = _uiState.value.amplitudes.also {
+                        it.add(normalized)
                     }
+                )
             }
         }
     }
 
-    var isRecording = _isRecording.asStateFlow()
-    var duration = _duration.asStateFlow()
 
-    var spikes = _spikes.asStateFlow()
-    var amplitudes = _amplitudes.asStateFlow()
-
-    fun init(context: Context) {
-        screenWidth = context.resources.displayMetrics.widthPixels.toFloat()
-        maxSpikes = (screenWidth / (spikeWidth + spaceBetweenSpike)).toInt()
-    }
+    var uiState = _uiState.asStateFlow()
+    var showSavedPopup = _showSavedPopup.asSharedFlow()
 
     fun toggleRecording(context: Context) {
-        if (_isRecording.value) {
+        if (_uiState.value.isRecording) {
             pauseRecording()
         } else {
             startRecording(context)
@@ -74,12 +48,10 @@ class AudioRecorderViewModel constructor() : ViewModel() {
     }
 
     private fun startRecording(context: Context) {
-        _isRecording.value = true
         if (recorder == null || audioFile == null) {
             recorder = AndroidAudioRecorder(context)
-            val date = SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.getDefault())
-                .format(Date())
-            audioFile = File("${context.externalCacheDir}/audio_file_$date.mp3")
+            val fileName = generateFileName(context)
+            audioFile = File(fileName)
         }
 
         audioFile?.let {
@@ -89,22 +61,32 @@ class AudioRecorderViewModel constructor() : ViewModel() {
             timer = Timer(listener = timerListener)
 
         timer?.start()
+        _uiState.value = _uiState.value.copy(
+            isRecording = true,
+            audioFilename = audioFile?.name ?: ""
+        )
+    }
+
+    private fun generateFileName(context: Context, fileName: String? = null): String {
+        return if (fileName?.isNotEmpty() == true) {
+            "${context.externalCacheDir}/$fileName.mp3"
+        } else {
+            val date = SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.getDefault()).format(Date())
+            "${context.externalCacheDir}/audio_file_$date.mp3"
+        }
     }
 
     private fun stopRecording() {
-        _isRecording.value = false
+        _uiState.value = AudioRecorderUiState()
         recorder?.stop()
         recorder = null
         timer?.stop()
         timer = null
         audioFile = null
-        _amplitudes.value = arrayListOf()
-        _spikes.value = arrayListOf()
-        _duration.value = "00:00.00"
     }
 
-    private fun pauseRecording() {
-        _isRecording.value = false
+    fun pauseRecording() {
+        _uiState.value = _uiState.value.copy(isRecording = false)
         recorder?.pause()
         timer?.pause()
     }
@@ -114,14 +96,15 @@ class AudioRecorderViewModel constructor() : ViewModel() {
         stopRecording()
     }
 
-    fun onDone() {
-    }
-
     fun onDelete() {
         audioFile?.delete()
         stopRecording()
     }
 
-    fun save(value: String) {
+    fun save(context: Context, fileName: String) {
+        pauseRecording()
+        val newFileName = generateFileName(context, fileName)
+        audioFile?.renameTo(File(newFileName))
+        stopRecording()
     }
 }

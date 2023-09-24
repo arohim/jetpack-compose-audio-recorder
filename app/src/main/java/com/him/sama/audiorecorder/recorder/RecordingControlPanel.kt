@@ -26,11 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.him.sama.audiorecorder.R
 import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
-import com.him.sama.audiorecorder.ui.theme.GrayDark
 
 @Composable
 fun BoxScope.ControlPanel(
     isRecording: Boolean,
+    hasFileRecording: Boolean,
     onRecordingClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onDoneClick: () -> Unit,
@@ -44,7 +44,7 @@ fun BoxScope.ControlPanel(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        if (isRecording)
+        if (isRecording || hasFileRecording)
             Box(
                 modifier = Modifier
                     .clickable(onClick = onDeleteClick)
@@ -85,7 +85,7 @@ fun BoxScope.ControlPanel(
                     .background(Color.Red, CircleShape)
             )
         Spacer(modifier = Modifier.width(16.dp))
-        if (isRecording)
+        if (isRecording || hasFileRecording)
             Box(
                 modifier = Modifier
                     .clickable(onClick = onDoneClick)
@@ -132,6 +132,7 @@ fun PreviewControlPanelRecording() {
         Box {
             ControlPanel(
                 isRecording = isRecording,
+                hasFileRecording = false,
                 onRecordingClick = {
                     isRecording = !isRecording
                 },
@@ -150,6 +151,7 @@ fun PreviewControlPanelNotRecording() {
         Box {
             ControlPanel(
                 isRecording = false,
+                hasFileRecording = true,
                 onRecordingClick = {},
                 onDeleteClick = {},
                 onDoneClick = {},

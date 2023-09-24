@@ -11,19 +11,20 @@ import android.view.View
 class WaveformView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     private val paint: Paint = Paint()
-    private var amplitudes = ArrayList<Float>()
     private var spikes = ArrayList<RectF>()
 
     private var radius = 6f
-    private var w = 9f
 
-    private var sw = 0f
-    private var sh = 400f
+    private var maxSpikes = 0
+    private val spikeWidth = 9f
+    private val spaceBetweenSpike = 6f
+
+    private var screenWidth = 0f
+    private var screenHeight = 400f
 
     init {
         paint.color = Color.rgb(244, 81, 30)
-
-        sw = resources.displayMetrics.widthPixels.toFloat()
+        screenWidth = resources.displayMetrics.widthPixels.toFloat()
     }
 
     override fun draw(canvas: Canvas) {
@@ -33,21 +34,18 @@ class WaveformView(context: Context?, attrs: AttributeSet?) : View(context, attr
         }
     }
 
-    fun addAmplitude(amp: Float) {
-        amplitudes.add(amp)
-
-        val left = 0f
-        val top = 0f
-        val right = left + w
-        val bottom = amp
-
-        spikes.add(RectF(left, top, right, bottom))
-        invalidate()
-    }
-
-    fun setData(amplitudes: ArrayList<Float>, spikes: ArrayList<RectF>) {
-        this.amplitudes = amplitudes
-        this.spikes = spikes
+    fun setData(amplitudes: ArrayList<Float>) {
+        this.spikes.clear()
+        amplitudes
+            .takeLast(maxSpikes)
+            .forEachIndexed { i, amplitude ->
+                val left =
+                    screenWidth - i * (spikeWidth + spaceBetweenSpike)
+                val top = screenHeight / 2 - amplitude / 2
+                val right = left + spikeWidth
+                val bottom = screenHeight / 2 + amplitude / 2
+                spikes.add(RectF(left, top, right, bottom))
+            }
         invalidate()
     }
 }
