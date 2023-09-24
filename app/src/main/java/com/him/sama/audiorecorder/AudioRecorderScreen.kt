@@ -88,7 +88,12 @@ fun AudioRecorderScreen(
     LaunchedEffect(Unit) {
         launch {
             viewModel.showSavedPopup.collectLatest {
-                Toast.makeText(context, "File saved", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "Record saved", Toast.LENGTH_LONG).show()
+            }
+        }
+        launch {
+            viewModel.showRecordDeleted.collectLatest {
+                Toast.makeText(context, "Record deleted", Toast.LENGTH_LONG).show()
             }
         }
     }

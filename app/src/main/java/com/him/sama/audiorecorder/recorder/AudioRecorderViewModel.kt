@@ -2,12 +2,14 @@ package com.him.sama.audiorecorder.recorder
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.him.sama.audiorecorder.recorder.Timer.OnTimerTickListener
 import com.him.sama.audiorecorder.recorder.model.AudioRecorderUiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -15,7 +17,8 @@ import java.util.Locale
 
 class AudioRecorderViewModel : ViewModel() {
 
-    private var _showSavedPopup = MutableSharedFlow<Unit>()
+    private var _showRecordSaved = MutableSharedFlow<Unit>()
+    private var _showRecordDeleted = MutableSharedFlow<Unit>()
     private var _uiState = MutableStateFlow(AudioRecorderUiState())
     private var recorder: AndroidAudioRecorder? = null
     private var audioFile: File? = null
@@ -37,7 +40,8 @@ class AudioRecorderViewModel : ViewModel() {
 
 
     var uiState = _uiState.asStateFlow()
-    var showSavedPopup = _showSavedPopup.asSharedFlow()
+    var showSavedPopup = _showRecordSaved.asSharedFlow()
+    var showRecordDeleted = _showRecordDeleted.asSharedFlow()
 
     fun toggleRecording(context: Context) {
         if (_uiState.value.isRecording) {
@@ -99,6 +103,9 @@ class AudioRecorderViewModel : ViewModel() {
     fun onDelete() {
         audioFile?.delete()
         stopRecording()
+        viewModelScope.launch {
+            _showRecordDeleted.emit(Unit)
+        }
     }
 
     fun save(context: Context, fileName: String) {
@@ -106,5 +113,8 @@ class AudioRecorderViewModel : ViewModel() {
         val newFileName = generateFileName(context, fileName)
         audioFile?.renameTo(File(newFileName))
         stopRecording()
+        viewModelScope.launch {
+            _showRecordSaved.emit(Unit)
+        }
     }
 }
