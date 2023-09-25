@@ -11,7 +11,7 @@ import com.him.sama.audiorecorder.data.database.entity.AudioRecord
 interface AudioRecordDao {
 
     @Query("SELECT * FROM AudioRecord")
-    fun getAll(): List<AudioRecord>
+    suspend fun getAll(): List<AudioRecord>
 
     @Insert
     fun insert(vararg audioRecord: AudioRecord)

@@ -5,6 +5,7 @@ import com.him.sama.audiorecorder.data.database.AppDatabase
 import com.him.sama.audiorecorder.data.database.AudioRecordRepositoryImpl
 import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
 import com.him.sama.audiorecorder.ui.recorder.screen.AudioRecorderViewModel
+import com.him.sama.audiorecorder.ui.playerlist.RecordListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -25,4 +26,5 @@ val appModule = module {
     }
     singleOf(::AudioRecordRepositoryImpl) { bind<AudioRecordRepository>() }
     viewModelOf(::AudioRecorderViewModel)
+    viewModelOf(::RecordListViewModel)
 }

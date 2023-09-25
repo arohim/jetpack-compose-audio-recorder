@@ -15,7 +15,7 @@ class AudioRecordRepositoryImpl constructor(
         dao.delete(audioRecord)
     }
 
-    override fun getAll(): List<AudioRecord> {
+    override suspend fun getAll(): List<AudioRecord> {
         return dao.getAll()
     }
 }
