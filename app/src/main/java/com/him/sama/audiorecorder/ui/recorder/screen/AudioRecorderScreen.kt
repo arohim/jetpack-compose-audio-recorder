@@ -20,7 +20,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,8 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.him.sama.audiorecorder.ui.recorder.WaveformView
+import com.him.sama.audiorecorder.ui.recorder.component.WaveformView
 import com.him.sama.audiorecorder.ui.recorder.component.ConfirmToSaveFileModalContent
 import com.him.sama.audiorecorder.ui.recorder.component.ControlPanel
 import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme

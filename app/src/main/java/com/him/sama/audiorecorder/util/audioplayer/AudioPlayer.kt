@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.ui.audioplayer
+package com.him.sama.audiorecorder.util.audioplayer
 
 import java.io.File
 

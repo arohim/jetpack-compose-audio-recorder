@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.ui.recorder
+package com.him.sama.audiorecorder.util.recorder
 
 import android.content.Context
 import android.media.MediaRecorder

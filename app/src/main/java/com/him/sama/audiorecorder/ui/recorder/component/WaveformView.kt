@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.ui.recorder
+package com.him.sama.audiorecorder.ui.recorder.component
 
 import android.content.Context
 import android.graphics.Canvas

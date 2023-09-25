@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.him.sama.audiorecorder.data.database.entity.AudioRecord
 import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
-import com.him.sama.audiorecorder.ui.recorder.AndroidAudioRecorder
-import com.him.sama.audiorecorder.ui.recorder.Timer
-import com.him.sama.audiorecorder.ui.recorder.Timer.OnTimerTickListener
+import com.him.sama.audiorecorder.util.recorder.AndroidAudioRecorder
+import com.him.sama.audiorecorder.util.timer.Timer
+import com.him.sama.audiorecorder.util.timer.Timer.OnTimerTickListener
 import com.him.sama.audiorecorder.ui.recorder.model.AudioRecorderUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.text.SimpleDateFormat
 import java.util.ArrayList
