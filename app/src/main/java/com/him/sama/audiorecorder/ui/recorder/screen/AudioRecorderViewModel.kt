@@ -9,13 +9,19 @@ import com.him.sama.audiorecorder.ui.recorder.AndroidAudioRecorder
 import com.him.sama.audiorecorder.ui.recorder.Timer
 import com.him.sama.audiorecorder.ui.recorder.Timer.OnTimerTickListener
 import com.him.sama.audiorecorder.ui.recorder.model.AudioRecorderUiState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.text.SimpleDateFormat
+import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 
@@ -118,19 +124,39 @@ class AudioRecorderViewModel(
         pauseRecording()
         val newFileName = generateFileName(context, fileName)
         val newFile = File(newFileName)
+        val amplitudeFilePath = saveAmplitudes(context, fileName, _uiState.value.amplitudes)
         audioFile?.renameTo(newFile)
-        audioRecordRepository.insert(
-            AudioRecord(
-                fileName = newFileName,
-                filePath = newFile.path,
-                timestamp = Date().time,
-                duration = _uiState.value.duration,
-                amsPath = ""
+        viewModelScope.launch(Dispatchers.IO) {
+            audioRecordRepository.insert(
+                AudioRecord(
+                    fileName = newFile.name,
+                    filePath = newFile.path,
+                    timestamp = Date().time,
+                    duration = _uiState.value.duration,
+                    amsPath = amplitudeFilePath
+                )
             )
-        )
-        stopRecording()
-        viewModelScope.launch {
+            stopRecording()
             _showRecordSaved.emit(Unit)
+        }
+    }
+
+    private fun saveAmplitudes(
+        context: Context,
+        fileName: String,
+        amplitudes: ArrayList<Float>
+    ): String? {
+        return try {
+            val filePath = "${context.externalCacheDir}/$fileName"
+            val file = File(filePath)
+            val fos = FileOutputStream(file)
+            val out = ObjectOutputStream(fos)
+            out.writeObject(amplitudes)
+            fos.close()
+            out.close()
+            filePath
+        } catch (e: IOException) {
+            null
         }
     }
 }

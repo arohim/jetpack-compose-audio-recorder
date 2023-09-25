@@ -10,7 +10,7 @@ data class AudioRecord(
     val filePath: String,
     val timestamp: Long,
     val duration: String,
-    val amsPath: String,
+    val amsPath: String? = null,
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
