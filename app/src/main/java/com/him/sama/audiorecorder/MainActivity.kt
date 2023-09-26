@@ -7,8 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.him.sama.audiorecorder.ui.recorder.screen.AudioRecorderScreen
-import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.him.sama.audiorecorder.presentation.route.RECORDS_LIST_SCREEN
+import com.him.sama.audiorecorder.presentation.route.RECORD_SCREEN
+import com.him.sama.audiorecorder.presentation.ui.playerlist.screen.RecordListScreen
+import com.him.sama.audiorecorder.presentation.ui.recorder.screen.AudioRecorderScreen
+import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +26,27 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AudioRecorderScreen()
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = RECORD_SCREEN
+                    ) {
+                        composable(RECORD_SCREEN) {
+                            AudioRecorderScreen(
+                                onNavigateToList = {
+                                    navController.navigate(RECORDS_LIST_SCREEN)
+                                }
+                            )
+                        }
+                        composable(RECORDS_LIST_SCREEN) {
+                            RecordListScreen(
+                                onBack = {
+                                    navController.navigateUp()
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
