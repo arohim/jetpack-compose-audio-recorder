@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.ui.theme
+package com.him.sama.audiorecorder.ui.designsystem.theme
 
 import android.app.Activity
 import android.os.Build

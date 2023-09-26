@@ -5,13 +5,15 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.him.sama.audiorecorder.data.database.entity.AudioRecord
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 
 
 @Dao
 interface AudioRecordDao {
 
     @Query("SELECT * FROM AudioRecord")
-    suspend fun getAll(): List<AudioRecord>
+    fun getAll(): Flow<List<AudioRecord>>
 
     @Insert
     fun insert(vararg audioRecord: AudioRecord)

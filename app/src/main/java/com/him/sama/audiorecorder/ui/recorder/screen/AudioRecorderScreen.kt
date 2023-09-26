@@ -44,8 +44,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.him.sama.audiorecorder.ui.recorder.component.WaveformView
 import com.him.sama.audiorecorder.ui.recorder.component.ConfirmToSaveFileModalContent
 import com.him.sama.audiorecorder.ui.recorder.component.ControlPanel
-import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
-import com.him.sama.audiorecorder.ui.theme.ColorText
+import com.him.sama.audiorecorder.ui.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.ui.designsystem.theme.ColorText
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

@@ -2,6 +2,7 @@ package com.him.sama.audiorecorder.data.database
 
 import com.him.sama.audiorecorder.data.database.entity.AudioRecord
 import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
+import kotlinx.coroutines.flow.Flow
 
 class AudioRecordRepositoryImpl constructor(
     private val dao: AudioRecordDao
@@ -15,7 +16,7 @@ class AudioRecordRepositoryImpl constructor(
         dao.delete(audioRecord)
     }
 
-    override suspend fun getAll(): List<AudioRecord> {
+    override fun getAll(): Flow<List<AudioRecord>> {
         return dao.getAll()
     }
 }

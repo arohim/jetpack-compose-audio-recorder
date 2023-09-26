@@ -2,11 +2,9 @@ package com.him.sama.audiorecorder.ui.playerlist.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,10 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.him.sama.audiorecorder.R
-import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.ui.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.ui.designsystem.theme.BodyThickText
+import com.him.sama.audiorecorder.ui.designsystem.theme.LabelText
+import com.him.sama.audiorecorder.ui.designsystem.theme.LabelThickText
 
 @Composable
-fun RecordItem(title: String, meta: String) {
+fun RecordItem(title: String, meta: String, onCheckedChange: ((Boolean) -> Unit)?) {
     Row(
         modifier = Modifier
             .clickable { }
@@ -46,23 +47,22 @@ fun RecordItem(title: String, meta: String) {
                 .background(Color.White)
                 .weight(1f),
         ) {
-            Text(
+            BodyThickText(
                 modifier = Modifier.fillMaxWidth(),
                 text = title,
-                style = MaterialTheme.typography.bodySmall,
                 color = Color.Black
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
+            LabelThickText(
                 modifier = Modifier.fillMaxWidth(),
                 text = meta,
-                style = MaterialTheme.typography.labelSmall,
                 color = Color.Gray
             )
         }
         Checkbox(
             checked = false,
-            onCheckedChange = {})
+            onCheckedChange = onCheckedChange
+        )
     }
 }
 
@@ -73,6 +73,7 @@ fun PreviewRecordItem() {
         RecordItem(
             title = "Hello title ".repeat(10),
             meta = "5MB, 5:24",
+            {},
         )
     }
 

@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.him.sama.audiorecorder.R
-import com.him.sama.audiorecorder.ui.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.ui.designsystem.theme.AudioRecorderTheme
 
 @Composable
 fun BoxScope.ControlPanel(
@@ -55,7 +55,7 @@ fun BoxScope.ControlPanel(
                     modifier = Modifier
                         .size(48.dp)
                         .align(Alignment.Center),
-                    painter = painterResource(id = R.drawable.outline_clear_24),
+                    painter = painterResource(id = R.drawable.ic_outline_clear_24),
                     contentDescription = null,
                     tint = Color.Black
                 )
@@ -72,7 +72,7 @@ fun BoxScope.ControlPanel(
                 modifier = Modifier
                     .clickable(onClick = onRecordingClick)
                     .size(84.dp),
-                painter = painterResource(id = R.drawable.baseline_stop_circle_24),
+                painter = painterResource(id = R.drawable.ic_baseline_stop_circle_24),
                 contentDescription = null,
                 tint = Color.Red
             )
@@ -96,7 +96,7 @@ fun BoxScope.ControlPanel(
                     modifier = Modifier
                         .size(48.dp)
                         .align(Alignment.Center),
-                    painter = painterResource(id = R.drawable.round_done_24),
+                    painter = painterResource(id = R.drawable.ic_round_done_24),
                     contentDescription = null,
                     tint = Color.Black
                 )
@@ -112,7 +112,7 @@ fun BoxScope.ControlPanel(
                     modifier = Modifier
                         .size(48.dp)
                         .align(Alignment.Center),
-                    painter = painterResource(id = R.drawable.baseline_view_list_24),
+                    painter = painterResource(id = R.drawable.ic_baseline_view_list_24),
                     contentDescription = null,
                     tint = Color.Black
                 )

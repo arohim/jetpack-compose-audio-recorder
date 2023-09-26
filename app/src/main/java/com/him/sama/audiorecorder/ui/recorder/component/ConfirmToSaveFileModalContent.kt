@@ -28,7 +28,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.him.sama.audiorecorder.ui.theme.GrayDark
+import com.him.sama.audiorecorder.ui.designsystem.theme.GrayDark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
