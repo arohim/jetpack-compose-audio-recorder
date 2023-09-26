@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.recorder.screen
+package com.him.sama.audiorecorder.presentation.feature.recorder.screen
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
 import com.him.sama.audiorecorder.presentation.util.recorder.AndroidAudioRecorder
 import com.him.sama.audiorecorder.presentation.util.timer.Timer
 import com.him.sama.audiorecorder.presentation.util.timer.Timer.OnTimerTickListener
-import com.him.sama.audiorecorder.presentation.ui.recorder.model.AudioRecorderUiState
+import com.him.sama.audiorecorder.presentation.feature.recorder.model.AudioRecorderUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

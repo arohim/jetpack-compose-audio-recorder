@@ -12,9 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.him.sama.audiorecorder.presentation.route.RECORDS_LIST_SCREEN
 import com.him.sama.audiorecorder.presentation.route.RECORD_SCREEN
-import com.him.sama.audiorecorder.presentation.ui.playerlist.screen.RecordListScreen
-import com.him.sama.audiorecorder.presentation.ui.recorder.screen.AudioRecorderScreen
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.presentation.feature.playerlist.screen.RecordListScreen
+import com.him.sama.audiorecorder.presentation.feature.recorder.screen.AudioRecorderScreen
+import com.him.sama.audiorecorder.presentation.designsystem.theme.AudioRecorderTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.playerlist.component
+package com.him.sama.audiorecorder.presentation.feature.playerlist.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,10 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.him.sama.audiorecorder.R
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.BodyThickText
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.LabelText
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.LabelThickText
+import com.him.sama.audiorecorder.presentation.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.presentation.designsystem.theme.BodyThickText
+import com.him.sama.audiorecorder.presentation.designsystem.theme.LabelThickText
 
 @Composable
 fun RecordItem(title: String, meta: String, onCheckedChange: ((Boolean) -> Unit)?) {

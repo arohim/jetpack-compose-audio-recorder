@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.recorder.component
+package com.him.sama.audiorecorder.presentation.feature.recorder.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.him.sama.audiorecorder.R
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.presentation.designsystem.theme.AudioRecorderTheme
 
 @Composable
 fun BoxScope.ControlPanel(

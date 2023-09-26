@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.designsystem.theme
+package com.him.sama.audiorecorder.presentation.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

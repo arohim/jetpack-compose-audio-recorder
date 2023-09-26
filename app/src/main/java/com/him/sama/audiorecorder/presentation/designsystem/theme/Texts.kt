@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.designsystem.theme
+package com.him.sama.audiorecorder.presentation.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

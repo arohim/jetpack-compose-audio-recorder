@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.recorder.component
+package com.him.sama.audiorecorder.presentation.feature.recorder.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +28,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.GrayDark
+import com.him.sama.audiorecorder.presentation.designsystem.theme.GrayDark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.recorder.screen
+package com.him.sama.audiorecorder.presentation.feature.recorder.screen
 
 import android.Manifest.permission.RECORD_AUDIO
 import android.content.pm.PackageManager
@@ -41,11 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.him.sama.audiorecorder.presentation.ui.recorder.component.WaveformView
-import com.him.sama.audiorecorder.presentation.ui.recorder.component.ConfirmToSaveFileModalContent
-import com.him.sama.audiorecorder.presentation.ui.recorder.component.ControlPanel
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.ColorText
+import com.him.sama.audiorecorder.presentation.feature.recorder.component.WaveformView
+import com.him.sama.audiorecorder.presentation.feature.recorder.component.ConfirmToSaveFileModalContent
+import com.him.sama.audiorecorder.presentation.feature.recorder.component.ControlPanel
+import com.him.sama.audiorecorder.presentation.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.presentation.designsystem.theme.ColorText
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

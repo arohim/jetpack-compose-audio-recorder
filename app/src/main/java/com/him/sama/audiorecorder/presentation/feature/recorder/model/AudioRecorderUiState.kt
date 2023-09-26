@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.recorder.model
+package com.him.sama.audiorecorder.presentation.feature.recorder.model
 
 data class AudioRecorderUiState(
     val isLoading: Boolean = false,

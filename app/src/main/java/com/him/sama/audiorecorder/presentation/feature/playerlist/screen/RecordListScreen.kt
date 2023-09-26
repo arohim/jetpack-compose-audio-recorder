@@ -1,4 +1,4 @@
-package com.him.sama.audiorecorder.presentation.ui.playerlist.screen
+package com.him.sama.audiorecorder.presentation.feature.playerlist.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,10 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.him.sama.audiorecorder.data.database.entity.AudioRecord
-import com.him.sama.audiorecorder.presentation.ui.designsystem.component.TopBar
-import com.him.sama.audiorecorder.presentation.ui.playerlist.RecordListViewModel
-import com.him.sama.audiorecorder.presentation.ui.playerlist.component.RecordItem
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.presentation.designsystem.component.TopBar
+import com.him.sama.audiorecorder.presentation.feature.playerlist.RecordListViewModel
+import com.him.sama.audiorecorder.presentation.feature.playerlist.component.RecordItem
+import com.him.sama.audiorecorder.presentation.designsystem.theme.AudioRecorderTheme
 import org.koin.androidx.compose.koinViewModel
 import java.text.SimpleDateFormat
 import java.util.Date

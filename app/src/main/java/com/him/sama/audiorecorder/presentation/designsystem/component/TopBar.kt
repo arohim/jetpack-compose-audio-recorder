@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
-package com.him.sama.audiorecorder.presentation.ui.designsystem.component
+package com.him.sama.audiorecorder.presentation.designsystem.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.him.sama.audiorecorder.R
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.AudioRecorderTheme
-import com.him.sama.audiorecorder.presentation.ui.designsystem.theme.SubHeadThickText
+import com.him.sama.audiorecorder.presentation.designsystem.theme.AudioRecorderTheme
+import com.him.sama.audiorecorder.presentation.designsystem.theme.SubHeadThickText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
