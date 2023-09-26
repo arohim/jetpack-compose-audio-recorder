@@ -72,6 +72,7 @@ dependencies {
 
     implementation("io.insert-koin:koin-android:3.4.0")
     implementation("io.insert-koin:koin-androidx-compose:3.4.0")
+    implementation("androidx.navigation:navigation-compose:2.7.3")
 
 
     testImplementation("junit:junit:4.13.2")
