@@ -37,6 +37,10 @@ class Timer(listener: OnTimerTickListener) {
         duration = 0L
     }
 
+    fun resume() {
+        handler.postDelayed(runnable, delay)
+    }
+
     fun format(): String {
         val millis = duration % 1000
         val seconds = (duration / 1000) % 60

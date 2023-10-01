@@ -57,9 +57,17 @@ class AudioRecorderViewModel(
     fun toggleRecording(context: Context) {
         if (_uiState.value.isRecording) {
             pauseRecording()
+        } else if (_uiState.value.audioFilename.isNotBlank()) {
+            resumeRecording()
         } else {
             startRecording(context)
         }
+    }
+
+    private fun resumeRecording() {
+        recorder?.resume()
+        timer?.resume()
+        _uiState.value = _uiState.value.copy(isRecording = true)
     }
 
     private fun startRecording(context: Context) {

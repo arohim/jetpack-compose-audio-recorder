@@ -56,6 +56,10 @@ class AndroidAudioRecorder(
         recorder = null
     }
 
+    override fun resume() {
+        recorder?.resume()
+    }
+
     override fun maxAmplitude(): Float {
         return recorder?.maxAmplitude?.toFloat() ?: 0f
     }

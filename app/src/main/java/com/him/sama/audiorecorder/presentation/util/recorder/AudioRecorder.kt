@@ -7,4 +7,5 @@ interface AudioRecorder {
     fun pause()
     fun stop()
     fun maxAmplitude(): Float
+    fun resume()
 }
