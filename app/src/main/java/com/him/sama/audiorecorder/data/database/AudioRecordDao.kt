@@ -14,6 +14,9 @@ interface AudioRecordDao {
     @Query("SELECT * FROM AudioRecord")
     fun getAll(): Flow<List<AudioRecord>>
 
+    @Query("SELECT * FROM AudioRecord WHERE id=:id")
+    suspend fun get(id: Int): AudioRecord
+
     @Insert
     fun insert(vararg audioRecord: AudioRecord)
 

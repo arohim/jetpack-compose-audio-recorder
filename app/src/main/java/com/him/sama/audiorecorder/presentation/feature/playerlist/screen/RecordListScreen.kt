@@ -26,6 +26,7 @@ import java.util.Locale
 @Composable
 fun RecordListScreen(
     recordListViewModel: RecordListViewModel = koinViewModel(),
+    onItemClick: (Int) -> Unit,
     onBack: () -> Unit
 ) {
     val records = recordListViewModel.records
@@ -34,6 +35,7 @@ fun RecordListScreen(
     Content(
         records = records,
         onDelete = recordListViewModel::delete,
+        onItemClick = onItemClick,
         onBack = onBack
     )
 }
@@ -42,6 +44,7 @@ fun RecordListScreen(
 private fun Content(
     records: List<AudioRecord>,
     onDelete: (AudioRecord) -> Unit,
+    onItemClick: (Int) -> Unit,
     onBack: () -> Unit
 ) {
     Column(
@@ -69,6 +72,9 @@ private fun Content(
                 RecordItem(
                     title = audioRecord.fileName,
                     meta = meta,
+                    onItemClick = {
+                        onItemClick(audioRecord.id)
+                    },
                     onCheckedChange = {
                         onDelete(audioRecord)
                     }
@@ -82,6 +88,25 @@ private fun Content(
 @Composable
 fun PreviewRecordListScreen() {
     AudioRecorderTheme {
-        Content(listOf(), {}, {})
+        Content(
+            records = listOf(
+                AudioRecord(
+                    fileName = "fileName.mp3",
+                    filePath = "filePath",
+                    timestamp = 1L,
+                    duration = "00:10:00",
+                    amsPath = null
+                ),
+                AudioRecord(
+                    fileName = "fileName.mp3",
+                    filePath = "filePath",
+                    timestamp = 1L,
+                    duration = "00:10:00",
+                    amsPath = null
+                ),
+            ),
+            onDelete = {},
+            onItemClick = {}
+        ) {}
     }
 }

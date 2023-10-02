@@ -1,8 +1,10 @@
 package com.him.sama.audiorecorder.presentation.util.audioplayer
 
-import java.io.File
-
 interface AudioPlayer {
-    fun playFile(file: File)
+    val currentPosition: Int
+
+    fun play()
     fun stop()
+    fun pause()
+    val duration: Int
 }

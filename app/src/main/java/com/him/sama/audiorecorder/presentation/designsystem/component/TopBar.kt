@@ -49,12 +49,13 @@ fun TopBar(
             },
             navigationIcon = {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_chevron_left_24),
-                    contentDescription = null,
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .size(24.dp)
-                        .clickable { onBackPressed() }
+                        .clickable { onBackPressed() },
+                    painter = painterResource(id = R.drawable.ic_baseline_chevron_left_24),
+                    contentDescription = null,
+                    tint = Color.Black
                 )
             },
             actions = {

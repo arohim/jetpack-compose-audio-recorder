@@ -19,4 +19,8 @@ class AudioRecordRepositoryImpl constructor(
     override fun getAll(): Flow<List<AudioRecord>> {
         return dao.getAll()
     }
+
+    override suspend fun get(id: Int): AudioRecord {
+        return dao.get(id)
+    }
 }

@@ -24,10 +24,15 @@ import com.him.sama.audiorecorder.presentation.designsystem.theme.BodyThickText
 import com.him.sama.audiorecorder.presentation.designsystem.theme.LabelThickText
 
 @Composable
-fun RecordItem(title: String, meta: String, onCheckedChange: ((Boolean) -> Unit)?) {
+fun RecordItem(
+    title: String,
+    meta: String,
+    onItemClick: () -> Unit,
+    onCheckedChange: ((Boolean) -> Unit)?
+) {
     Row(
         modifier = Modifier
-            .clickable { }
+            .clickable(onClick = onItemClick)
             .background(Color.White)
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 16.dp)
@@ -70,7 +75,8 @@ fun PreviewRecordItem() {
         RecordItem(
             title = "Hello title ".repeat(10),
             meta = "5MB, 5:24",
-            {},
+            onItemClick = {},
+            onCheckedChange = {}
         )
     }
 
