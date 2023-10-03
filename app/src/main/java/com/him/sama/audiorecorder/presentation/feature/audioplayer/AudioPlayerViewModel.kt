@@ -3,7 +3,6 @@ package com.him.sama.audiorecorder.presentation.feature.audioplayer
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.io.File
-import java.text.DecimalFormat
 
 class AudioPlayerViewModel constructor(
     private val audioRecordRepository: AudioRecordRepository
@@ -24,7 +22,8 @@ class AudioPlayerViewModel constructor(
 
     private var handler: Handler? = null
     private var runner: Runnable? = null
-    private val delay = 1_000L
+    private val delay = 100L
+    private val jumpForward = 5_000
 
     val uiState = _uiState.asStateFlow()
 
@@ -37,23 +36,16 @@ class AudioPlayerViewModel constructor(
             _uiState.value = _uiState.value.copy(
                 audioRecord = audioRecord,
                 maxDurationMilli = milliseconds,
-                duration = audioRecord.duration
             )
-            Log.d("play", "maxDuration: $milliseconds")
             handler = Handler(Looper.getMainLooper())
             runner = Runnable {
                 val progressMilli = androidAudioPlayer?.currentPosition?.toFloat() ?: 0f
-                val seconds = (progressMilli / 1000) % 60
-                val minutes = (progressMilli / (1000 * 60) % 60)
-                val hours = (progressMilli / (1000 * 60 * 60) % 24)
-                Log.d("play", "progress: $progressMilli")
-                _uiState.value = _uiState.value.copy(
-                    progressMilli = progressMilli,
-                    duration = "00:00:%s".format(DecimalFormat("00.00").format(seconds))
-                )
-
-                if (progressMilli < _uiState.value.maxDurationMilli)
+                _uiState.value = _uiState.value.copy(progressMilli = progressMilli)
+                if (progressMilli < _uiState.value.maxDurationMilli) {
                     handler?.postDelayed(runner!!, delay)
+                } else {
+                    _uiState.value = _uiState.value.copy(isPlaying = false)
+                }
             }
         }
     }
@@ -84,5 +76,30 @@ class AudioPlayerViewModel constructor(
         handler = null
         runner = null
         androidAudioPlayer?.stop()
+    }
+
+    fun adjustSpeed(speed: Float) {
+        _uiState.value = _uiState.value.copy(speed = speed)
+        androidAudioPlayer?.adjustSpeed(speed)
+    }
+
+    fun backward() {
+        val currentPosition = androidAudioPlayer?.currentPosition ?: 0
+        androidAudioPlayer?.seekTo(currentPosition + -jumpForward)
+        val progressMilli = androidAudioPlayer?.currentPosition?.toFloat() ?: 0f
+        _uiState.value = _uiState.value.copy(progressMilli = progressMilli)
+    }
+
+    fun forward() {
+        val currentPosition = androidAudioPlayer?.currentPosition ?: 0
+        androidAudioPlayer?.seekTo(currentPosition + jumpForward)
+        val progressMilli = androidAudioPlayer?.currentPosition?.toFloat() ?: 0f
+        _uiState.value = _uiState.value.copy(progressMilli = progressMilli)
+    }
+
+    fun seekTo(position: Int) {
+        androidAudioPlayer?.seekTo(position)
+        val progressMilli = androidAudioPlayer?.currentPosition?.toFloat() ?: 0f
+        _uiState.value = _uiState.value.copy(progressMilli = progressMilli)
     }
 }

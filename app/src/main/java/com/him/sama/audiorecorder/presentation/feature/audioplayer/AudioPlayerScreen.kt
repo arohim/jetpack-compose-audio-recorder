@@ -52,6 +52,24 @@ fun AudioPlayerScreen(
         onBack = onBack,
         onPlayClick = {
             viewModel.playToggle()
+        },
+        speed1XClick = {
+            viewModel.adjustSpeed(1f)
+        },
+        speed2XClick = {
+            viewModel.adjustSpeed(2f)
+        },
+        speed3XClick = {
+            viewModel.adjustSpeed(3f)
+        },
+        onClickForward = {
+            viewModel.forward()
+        },
+        onClickBackward = {
+            viewModel.backward()
+        },
+        onValueChange = {
+            viewModel.seekTo(it.toInt())
         }
     )
 }
@@ -60,7 +78,13 @@ fun AudioPlayerScreen(
 private fun Content(
     uiState: AudioPlayerUi,
     onBack: () -> Unit,
-    onPlayClick: () -> Unit
+    onPlayClick: () -> Unit,
+    speed1XClick: () -> Unit,
+    speed2XClick: () -> Unit,
+    speed3XClick: () -> Unit,
+    onClickForward: () -> Unit,
+    onClickBackward: () -> Unit,
+    onValueChange: (Float) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -85,24 +109,71 @@ private fun Content(
         )
         PlayerPanel(
             uiState = uiState,
-            onPlayClick = onPlayClick
+            onPlayClick = onPlayClick,
+            speed1XClick = speed1XClick,
+            speed2XClick = speed2XClick,
+            speed3XClick = speed3XClick,
+            onClickForward = onClickForward,
+            onClickBackward = onClickBackward,
+            onValueChange = onValueChange
         )
     }
 }
 
 @Composable
-fun PlayerPanel(uiState: AudioPlayerUi, onPlayClick: () -> Unit) {
+fun PlayerPanel(
+    uiState: AudioPlayerUi,
+    onPlayClick: () -> Unit,
+    speed1XClick: () -> Unit,
+    speed2XClick: () -> Unit,
+    speed3XClick: () -> Unit,
+    onClickForward: () -> Unit,
+    onClickBackward: () -> Unit,
+    onValueChange: (Float) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-        BodyText(
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            text = uiState.duration
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            BodyText(
+                modifier = Modifier
+                    .clickable(onClick = speed1XClick)
+                    .background(
+                        if (uiState.speed == 1f) Orange else Color.LightGray,
+                        CircleShape
+                    )
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                text = "x1",
+                textAlign = TextAlign.Center,
+                color = if (uiState.speed == 1f) Color.White else Color.DarkGray
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            BodyText(
+                modifier = Modifier
+                    .clickable(onClick = speed2XClick)
+                    .background(
+                        if (uiState.speed == 2f) Orange else Color.LightGray,
+                        CircleShape
+                    )
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                text = "x2",
+                color = if (uiState.speed == 2f) Color.White else Color.DarkGray
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            BodyText(
+                modifier = Modifier
+                    .clickable(onClick = speed3XClick)
+                    .background(
+                        if (uiState.speed == 3f) Orange else Color.LightGray,
+                        CircleShape
+                    )
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                text = "x3",
+                color = if (uiState.speed == 3f) Color.White else Color.DarkGray
+            )
+        }
         Slider(
             modifier = Modifier.fillMaxWidth(),
             colors = SliderDefaults.colors(
@@ -112,42 +183,25 @@ fun PlayerPanel(uiState: AudioPlayerUi, onPlayClick: () -> Unit) {
             ),
             valueRange = 0f..uiState.maxDurationMilli,
             value = uiState.progressMilli,
-            onValueChange = {
-
-            }
+            onValueChange = onValueChange
         )
-        Row(modifier = Modifier.fillMaxWidth()) {
-            BodyText(
-                modifier = Modifier
-                    .background(Color.LightGray, CircleShape)
-                    .padding(horizontal = 16.dp, vertical = 2.dp),
-                text = "x1",
-                color = Color.DarkGray
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            BodyText(
-                modifier = Modifier
-                    .background(Color.LightGray, CircleShape)
-                    .padding(horizontal = 16.dp, vertical = 2.dp),
-                text = "x2",
-                color = Color.DarkGray
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            BodyText(
-                modifier = Modifier
-                    .background(Color.LightGray, CircleShape)
-                    .padding(horizontal = 16.dp, vertical = 2.dp),
-                text = "x3",
-                color = Color.DarkGray
-            )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            BodyText(text = uiState.progressDuration)
+            BodyText(text = uiState.duration)
         }
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier
+                    .clickable(onClick = onClickBackward)
+                    .size(48.dp),
                 painter = painterResource(id = R.drawable.ic_baseline_replay_5_24),
                 contentDescription = null,
                 tint = Orange
@@ -168,7 +222,9 @@ fun PlayerPanel(uiState: AudioPlayerUi, onPlayClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.width(24.dp))
             Icon(
-                modifier = Modifier.size(48.dp),
+                modifier = Modifier
+                    .clickable(onClick = onClickForward)
+                    .size(48.dp),
                 painter = painterResource(id = R.drawable.ic_baseline_forward_5_24),
                 contentDescription = null,
                 tint = Orange
@@ -185,6 +241,12 @@ fun PreviewAudioPlayerScreen() {
             uiState = AudioPlayerUi(),
             onBack = {},
             onPlayClick = {},
+            speed1XClick = {},
+            speed2XClick = {},
+            speed3XClick = {},
+            onClickForward = {},
+            onClickBackward = {},
+            onValueChange = {},
         )
     }
 }

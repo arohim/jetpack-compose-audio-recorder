@@ -2,6 +2,7 @@ package com.him.sama.audiorecorder.presentation.util.audioplayer
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.media.PlaybackParams
 import androidx.core.net.toUri
 import java.io.File
 
@@ -34,5 +35,13 @@ class AndroidAudioPlayer(
         player?.stop()
         player?.release()
         player = null
+    }
+
+    override fun adjustSpeed(speed: Float) {
+        player?.playbackParams = PlaybackParams().setSpeed(speed)
+    }
+
+    override fun seekTo(milliSecs: Int) {
+        player?.seekTo(milliSecs)
     }
 }

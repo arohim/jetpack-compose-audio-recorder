@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AudioRecordDao {
 
-    @Query("SELECT * FROM AudioRecord")
+    @Query("SELECT * FROM AudioRecord ORDER BY id DESC")
     fun getAll(): Flow<List<AudioRecord>>
 
     @Query("SELECT * FROM AudioRecord WHERE id=:id")
