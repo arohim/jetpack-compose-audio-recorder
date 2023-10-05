@@ -3,6 +3,7 @@ package com.him.sama.audiorecorder.presentation.feature.audioplayer
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.him.sama.audiorecorder.domain.repository.AudioRecordRepository
@@ -11,6 +12,8 @@ import com.him.sama.audiorecorder.presentation.util.audioplayer.AndroidAudioPlay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import linc.com.amplituda.Amplituda
+import linc.com.amplituda.exceptions.io.AmplitudaIOException
 import java.io.File
 
 class AudioPlayerViewModel constructor(
@@ -37,6 +40,7 @@ class AudioPlayerViewModel constructor(
                 audioRecord = audioRecord,
                 maxDurationMilli = milliseconds,
             )
+            getAmplitudes(context, audioRecord.filePath)
             handler = Handler(Looper.getMainLooper())
             runner = Runnable {
                 val progressMilli = androidAudioPlayer?.currentPosition?.toFloat() ?: 0f
@@ -48,6 +52,20 @@ class AudioPlayerViewModel constructor(
                 }
             }
         }
+    }
+
+    private fun getAmplitudes(context: Context, filePath: String) {
+        val amplituda = Amplituda(context)
+        amplituda.processAudio(filePath)
+            .get({ result ->
+                val amplitudesData: List<Int> = result.amplitudesAsList()
+                Log.d("amplitudes ", amplitudesData.toString())
+                _uiState.value = _uiState.value.copy(amplitudes = amplitudesData)
+            }) { exception ->
+                if (exception is AmplitudaIOException) {
+                    println("IO Exception!")
+                }
+            }
     }
 
     fun playToggle() {

@@ -100,9 +100,7 @@ private fun Content(
         SoundWave(
             modifier = Modifier.weight(1f),
             barHeight = 200.dp,
-            amplitudes = List(2_000) {
-                (100..800).random()
-            },
+            amplitudes = uiState.amplitudes,
             barColor = Orange,
             bgColor = Color.White,
             selectingLineColor = Color.Red

@@ -12,6 +12,7 @@ data class AudioPlayerUi(
     val progressMilli: Float = 0f,
     val maxDurationMilli: Float = 0f,
     val speed: Float = 1f,
+    val amplitudes: List<Int> = listOf()
 ) {
 
     val progressDuration: String
